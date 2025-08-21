@@ -24,11 +24,12 @@ namespace DesafioFundamentos.Models
                 if (checarPlaca(placa))
                 {
                     veiculos.Add(placa);
+                    Console.WriteLine("Veículo estacionado com sucesso!");
                     placaValida = true;
                 }
                 else
                 {
-                 Console.WriteLine("Digite uma placa em formato válido");   
+                    Console.WriteLine("Digite uma placa de veículo em formato válido");
                 }
             }
         }
