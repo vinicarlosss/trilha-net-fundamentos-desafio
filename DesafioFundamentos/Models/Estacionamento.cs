@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace DesafioFundamentos.Models
 {
     public class Estacionamento
@@ -14,9 +16,21 @@ namespace DesafioFundamentos.Models
 
         public void AdicionarVeiculo()
         {
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
-            string placa = Console.ReadLine();
-            veiculos.Add(placa);
+            bool placaValida = false;
+            while (!placaValida)
+            {
+                Console.WriteLine("Digite a placa do veículo para estacionar: (Modelo antigo: ABC1234 || Modelo Mercosul: BRA2E19)");
+                string placa = Console.ReadLine();
+                if (checarPlaca(placa))
+                {
+                    veiculos.Add(placa);
+                    placaValida = true;
+                }
+                else
+                {
+                 Console.WriteLine("Digite uma placa em formato válido");   
+                }
+            }
         }
 
         public void RemoverVeiculo()
@@ -36,7 +50,7 @@ namespace DesafioFundamentos.Models
                 // TODO: Realizar o seguinte cálculo: "precoInicial + precoPorHora * horas" para a variável valorTotal                
                 // *IMPLEMENTE AQUI*
                 int horas = 0;
-                decimal valorTotal = 0; 
+                decimal valorTotal = 0;
 
                 // TODO: Remover a placa digitada da lista de veículos
                 // *IMPLEMENTE AQUI*
@@ -62,6 +76,19 @@ namespace DesafioFundamentos.Models
             {
                 Console.WriteLine("Não há veículos estacionados.");
             }
+        }
+
+        //verifica se a placa informada é válida para o terrirório brasileiro
+        public bool checarPlaca(string placa)
+        {
+            if (string.IsNullOrWhiteSpace(placa))
+                return false;
+
+            placa = placa.ToUpper();
+            //Regex para checar modelo da placa do Mercosul e modelo antigo
+            string padraoAntigo = @"^[A-Z]{3}[0-9]{4}$";
+            string padraoMercosul = @"^[A-Z]{3}[0-9][A-Z][0-9]{2}$";
+            return Regex.IsMatch(placa, padraoAntigo) || Regex.IsMatch(placa, padraoMercosul);
         }
     }
 }
